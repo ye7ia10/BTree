@@ -1,13 +1,14 @@
 package eg.edu.alexu.csd.filestructure.btree.cs59_07;
 
-import javax.management.RuntimeErrorException;
 
+import javax.management.RuntimeErrorException;
 import eg.edu.alexu.csd.filestructure.btree.IBTree;
 import eg.edu.alexu.csd.filestructure.btree.IBTreeNode;
 
 public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	private int minimumDegree;
 	private IBTreeNode<K,V> root;
+	private boolean flg = true;
 	public BTree(int minimumDegree) {
 		// TODO Auto-generated constructor stub
 		this.minimumDegree = minimumDegree;
@@ -157,11 +158,6 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 		}
 		return searchHelper(key, node.getChildren().get(i));
 	}
-	@Override
-	public boolean delete(K key) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public void check(IBTreeNode<K, V> node, int level) {
 		System.out.println("level  " + level);
@@ -176,4 +172,254 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 		}
 	}
 	
+	@Override
+	public boolean delete(K key) {
+		// TODO Auto-generated method stub
+		
+		if (key == null) {
+			throw new RuntimeErrorException(null);
+		} 
+		
+		if (getRoot() == null) {
+			return false;
+		}
+		 remove(root, key);
+		 if (root.getNumOfKeys() == 0) 
+		 {  
+		        if (root.isLeaf()) 
+		            root = null; 
+		        else
+		            root = root.getChildren().get(0); 
+		} 
+		if (flg)
+		 return true;
+		else
+		return false;
+	}
+
+	private void remove(IBTreeNode<K, V> root, K key) {
+		// TODO Auto-generated method stub
+		int idx = findKey(root, key); 
+	    // The key to be removed is present in this node 
+	    if (idx < root.getNumOfKeys() && root.getKeys().get(idx).compareTo(key) == 0) 
+	    {  
+	        if (root.isLeaf()) 
+	            removeFromLeaf(root, idx); 
+	        else
+	            removeFromNonLeaf(root, idx); 
+	    }  
+	    else
+	    {  
+	        if (root.isLeaf()) 
+	        { 
+	            flg = false; 
+	            return; 
+	        } 
+	        boolean flag = ( (idx== root.getNumOfKeys())? true : false ); 
+	        if (   root.getChildren().get(idx).getNumOfKeys() < getMinimumDegree()) 
+	            fill(root, idx); 
+	        if (flag && idx > root.getNumOfKeys()) 
+	            remove(root.getChildren().get(idx - 1), key); 
+	        else
+	        	remove(root.getChildren().get(idx), key); 
+	    } 
+	    return;
+	}
+	
+	private void fill(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		// If the previous child(C[idx-1]) has more than t-1 keys, borrow a key 
+	    // from that child 
+	    if (idx != 0 && root2.getChildren().get(idx -1)
+	    	.getNumOfKeys() >= getMinimumDegree()) 
+	        borrowFromPrev(root2, idx); 
+	  
+	    // If the next child(C[idx+1]) has more than t-1 keys, borrow a key 
+	    // from that child 
+	    else if (idx!= root2.getNumOfKeys() && root2.getChildren().get(idx+1)
+		    	.getNumOfKeys() >= getMinimumDegree()) 
+	        borrowFromNext(root2, idx); 
+	  
+	    // Merge C[idx] with its sibling 
+	    // If C[idx] is the last child, merge it with with its previous sibling 
+	    // Otherwise merge it with its next sibling 
+	    else
+	    { 
+	        if (idx != root2.getNumOfKeys()) 
+	            merge(root2, idx); 
+	        else
+	            merge(root2, idx-1); 
+	    } 
+	    return;
+	}
+
+	private void borrowFromNext(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		
+		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
+	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx+1); 
+		    // Setting child's first key equal to keys[idx-1] from the current node 
+		child.getKeys().add(root2.getKeys().get(idx));   
+		child.getValues().add(root2.getValues().get(idx)); 
+		root2.getKeys().remove(idx);
+		root2.getValues().remove(idx);
+		    // Moving sibling's last child as C[idx]'s first child 
+		if(!child.isLeaf())
+		   child.getChildren().add(sibling.getChildren().get(0));
+		  
+		    // Moving the key from the sibling to the parent 
+		    // This reduces the number of keys in the sibling 
+		
+		root2.getKeys().add(idx, sibling.getKeys().get(0));
+		root2.getValues().add(idx, sibling.getValues().get(0));
+		
+	    sibling.getKeys().remove(0);
+	    sibling.getValues().remove(0);
+	    sibling.setNumOfKeys(sibling.getKeys().size());
+	    child.setNumOfKeys(child.getKeys().size());
+		return;
+		
+	}
+
+	private void borrowFromPrev(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
+	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx-1); 
+		    // Setting child's first key equal to keys[idx-1] from the current node 
+		child.getKeys().add(0, root2.getKeys().get(idx - 1));   
+		child.getValues().add(0, root2.getValues().get(idx - 1)); 
+		root2.getKeys().remove(idx-1);
+		root2.getValues().remove(idx-1);
+		    // Moving sibling's last child as C[idx]'s first child 
+		if(!child.isLeaf())
+		   child.getChildren().add(0, sibling.getChildren().get(sibling.getNumOfKeys()));
+		  
+		    // Moving the key from the sibling to the parent 
+		    // This reduces the number of keys in the sibling 
+		
+		root2.getKeys().add(idx-1, sibling.getKeys().get(sibling.getNumOfKeys() - 1));
+		root2.getValues().add(idx-1, sibling.getValues().get(sibling.getNumOfKeys() - 1));
+		
+	    sibling.getKeys().remove(sibling.getNumOfKeys() - 1);
+	    sibling.getValues().remove(sibling.getNumOfKeys() - 1);
+	    sibling.setNumOfKeys(sibling.getKeys().size());
+	    child.setNumOfKeys(child.getKeys().size());
+		    return; 
+	}
+
+	private void removeFromNonLeaf(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+	    K k = root2.getKeys().get(idx); 
+	    
+	    if (root2.getChildren().get(idx).getNumOfKeys() >= getMinimumDegree()) 
+	    { 
+	        IBTreeNode<K, V> pred = getPred(root2, idx); 
+	        root2.getKeys().set(idx, pred.getKeys().get(pred.getNumOfKeys()-1)); 
+	        root2.getValues().set(idx, pred.getValues().get(pred.getNumOfKeys()-1)); 
+	        remove(root2.getChildren().get(idx), pred.getKeys().get(pred.getNumOfKeys()-1)); 
+	    } 
+	    
+	    else if  (root2.getChildren().get(idx+1).getNumOfKeys() >= getMinimumDegree()) 
+	    { 
+	    	IBTreeNode<K, V> succ = getSucc(root2, idx); 
+	    	root2.getKeys().set(idx, succ.getKeys().get(0)); 
+	    	root2.getValues().set(idx, succ.getValues().get(0)); 
+	    	remove(root2.getChildren().get(idx+1), succ.getKeys().get(0));  
+	    } 
+	    
+	
+	    	else
+	        { 
+	            merge(root2, idx); 
+	            remove(root2.getChildren().get(idx), k); 
+	        } 
+	        return; 
+	    
+	}
+
+	private void merge(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
+	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx+1); 
+	  
+	    // Pulling a key from the current node and inserting it into (t-1)th 
+	    // position of C[idx]
+	    child.getKeys().add(getMinimumDegree() - 1, root2.getKeys().get(idx));
+	    // Copying the keys from C[idx+1] to C[idx] at the end 
+	    child.getKeys().addAll(sibling.getKeys());
+	    child.getValues().addAll(sibling.getValues());
+	  
+	    // Copying the child pointers from C[idx+1] to C[idx] 
+	    if (!child.isLeaf()) 
+	    { child.getChildren().addAll(sibling.getChildren()); 
+	    } 
+	  
+	  root2.getKeys().remove(idx);
+	  root2.getValues().remove(idx);
+	  root2.getChildren().remove(idx);
+	   // Updating the key count of child and the current node 
+	  child.setNumOfKeys(child.getKeys().size());
+	  root2.setNumOfKeys(root2.getKeys().size());
+	    return;
+	}
+
+	private IBTreeNode<K, V> getSucc(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		
+		// Keep moving to the right most node until we reach a leaf 
+		IBTreeNode<K, V> cur = root2.getChildren().get(idx+1);
+	    while (!cur.isLeaf()) 
+	        cur = cur.getChildren().get(0); 
+	    // Return the last key of the leaf 
+	    return  cur;
+	}
+
+	private IBTreeNode<K, V> getPred(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		
+		// Keep moving to the right most node until we reach a leaf 
+		IBTreeNode<K, V> cur = root2.getChildren().get(idx);
+	    while (!cur.isLeaf()) 
+	        cur = cur.getChildren().get(cur.getNumOfKeys()); 
+	  
+	    // Return the last key of the leaf 
+	    return  cur;
+	}
+
+	private void removeFromLeaf(IBTreeNode<K, V> root2, int idx) {
+		// TODO Auto-generated method stub
+		root2.getKeys().remove(idx);
+		root2.getValues().remove(idx);
+		root2.setNumOfKeys(root2.getKeys().size());
+	}
+
+	private int findKey(IBTreeNode<K, V> node, K k) 
+	{ 
+	    int idx=0; 
+	    while (idx< node.getNumOfKeys() && node.getKeys().get(idx).compareTo(k) < 0) 
+	        ++idx; 
+	    return idx; 
+	} 
+	
+	public void traverse(IBTreeNode<K, V> root) {
+	    // There are n keys and n+1 children, travers through n keys 
+	    // and first n children 
+	    int i; 
+	    for (i = 0; i < root.getNumOfKeys(); i++) 
+	    { 
+	        // If this is not leaf, then before printing key[i], 
+	        // traverse the subtree rooted with child C[i]. 
+	        if (!root.isLeaf()) 
+	            traverse(root.getChildren().get(i)); 
+	        System.out.print("** " + root.getKeys().get(i) + " "); 
+	    }
+	    
+	  
+	    // Print the subtree rooted with last child 
+	    if (!root.isLeaf()) 
+	        traverse(root.getChildren().get(i)); 
+	}
+	
+	
+
 }
