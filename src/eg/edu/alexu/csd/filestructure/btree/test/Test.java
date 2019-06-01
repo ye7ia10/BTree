@@ -15,9 +15,26 @@ public class Test {
 
 	public static <K extends Comparable<K>, V> void main(String[] args) {
 		// TODO Auto-generated method stub
-		BTree<Integer, String> t = new BTree<>(3);
+		BTree<Integer, String> btree = new BTree<>(3);
 		
-		    t.insert(1, "a"); 
+		List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
+		for (int i : inp)
+			btree.insert(i, "Soso" + i);
+		
+		btree.traverse(btree.getRoot());
+		btree.delete(26);
+		
+		 System.out.println("Traversal of tree constructed is 26"); 
+		 btree.traverse(btree.getRoot()); 
+		 System.out.println(); 
+		 
+		btree.delete(13);
+			
+		 System.out.println("Traversal of tree constructed is 13"); 
+		 btree.traverse(btree.getRoot()); 
+		 System.out.println(); 
+		
+		   /* t.insert(1, "a"); 
 		    t.insert(3, "a"); 
 		    t.insert(7, "a"); 
 		    t.insert(10, "a"); 
@@ -73,7 +90,7 @@ public class Test {
 		    t.delete(16); 
 		    System.out.println("Traversal of tree constructed is 16 "); 
 		    t.traverse(t.getRoot()); 
-		    System.out.println(); 
+		    System.out.println(); */
 		  
 			}
 
