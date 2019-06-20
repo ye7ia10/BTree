@@ -1,35 +1,40 @@
 package eg.edu.alexu.csd.filestructure.btree.cs59_07;
 
+import java.io.Serializable;
+
 import eg.edu.alexu.csd.filestructure.btree.ISearchResult;
 
-public class SearchResult implements ISearchResult{
-
-	public SearchResult(String string, int i) {
+public class SearchResult implements ISearchResult, Serializable{
+	String ID;
+	int rank;
+	public SearchResult(String ID, int rank) {
 		// TODO Auto-generated constructor stub
+		this.ID = ID;
+		this.rank = rank;
 	}
 
 	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
-		return null;
+		return ID;
 	}
 
 	@Override
-	public void setId(String id) {
+	public void setId(String ID) {
 		// TODO Auto-generated method stub
-		
+		this.ID = ID;
 	}
 
 	@Override
 	public int getRank() {
 		// TODO Auto-generated method stub
-		return 0;
+		return rank;
 	}
 
 	@Override
 	public void setRank(int rank) {
 		// TODO Auto-generated method stub
-		
+		this.rank = rank;
 	}
 
 }

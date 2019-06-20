@@ -160,11 +160,9 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	}
 	
 	public void check(IBTreeNode<K, V> node, int level) {
-		System.out.println("level  " + level);
-		for(int i = 0; i < node.getNumOfKeys(); i++) {
-			System.out.print(node.getKeys().get(i) + "  ");
-		}
-		System.out.println("");
+		
+		
+		
 		if(!node.isLeaf()) {
 			for(int i = 0; i < node.getChildren().size(); i++) {
 				check(node.getChildren().get(i), level+1);
@@ -255,7 +253,6 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 
 	private void borrowFromNext(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println("neeeeeeeeeeext");
 		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
 	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx+1); 
 		    // Setting child's first key equal to keys[idx-1] from the current node 
@@ -285,7 +282,6 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 
 	private void borrowFromPrev(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println("preeeeeeeeev");
 		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
 	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx-1); 
 		    // Setting child's first key equal to keys[idx-1] from the current node 
@@ -314,7 +310,7 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 
 	private void removeFromNonLeaf(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println("non-leeeeeeeeaf");
+		
 	    K k = root2.getKeys().get(idx); 
 	    
 	    if (root2.getChildren().get(idx).getNumOfKeys() >= getMinimumDegree()) 
@@ -336,7 +332,7 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	
 	   	else
 	    { 
-	   			System.out.println("heeeeeeeeereeeeeeee");
+	   			
 	            merge(root2, idx); 
 	            remove(root2.getChildren().get(idx), k); 
 	    } 
@@ -373,7 +369,6 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 
 	private IBTreeNode<K, V> getSucc(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println("succcccccccccccccc");
 		// Keep moving to the right most node until we reach a leaf 
 		IBTreeNode<K, V> cur = root2.getChildren().get(idx+1);
 	    while (!cur.isLeaf()) 
@@ -384,7 +379,6 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 
 	private IBTreeNode<K, V> getPred(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println("preeeeeeeeed");
 		// Keep moving to the right most node until we reach a leaf 
 		IBTreeNode<K, V> cur = root2.getChildren().get(idx);
 	    while (!cur.isLeaf()) 
@@ -396,7 +390,6 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 
 	private void removeFromLeaf(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		System.out.println("leaaaaaaaaf");
 		root2.getKeys().remove(idx);
 		root2.getValues().remove(idx);
 		root2.setNumOfKeys(root2.getKeys().size());
@@ -414,14 +407,13 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	    // There are n keys and n+1 children, travers through n keys 
 	    // and first n children 
 	    int i; 
-	   // System.out.println(root.getKeys().size()  + "keys ***" + root.getChildren().size() + "childs  " + root.isLeaf());
+	   
 	    for (i = 0; i < root.getKeys().size(); i++) 
 	    { 
 	        // If this is not leaf, then before printing key[i], 
 	        // traverse the subtree rooted with child C[i]. 
 	        if (!root.isLeaf()) 
-	            traverse(root.getChildren().get(i)); 
-	        System.out.print("** " + root.getKeys().get(i) + " "); 
+	            traverse(root.getChildren().get(i));
 	    }
 	    
 	  
