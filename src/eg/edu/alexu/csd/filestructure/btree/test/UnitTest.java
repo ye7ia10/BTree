@@ -1009,12 +1009,13 @@ public class UnitTest {
 		try {
 			searchEngine.indexWebPage("res\\wiki_00");
 			searchEngine.indexWebPage("res\\wiki_01");
-			searchEngine.indexWebPage("res\\subfolder\\wiki_02");
+		//	searchEngine.indexWebPage("res\\subfolder\\wiki_02");
 			searchEngine.deleteWebPage("res\\wiki_01");
-			searchEngine.deleteWebPage("res\\subfolder\\wiki_02");
+			// searchEngine.deleteWebPage("res\\subfolder\\wiki_02");
 			searchEngine.deleteWebPage("res\\wiki_00");
 
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
+			
 			Assert.assertEquals(0, actual.size());
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to delete web page", e);

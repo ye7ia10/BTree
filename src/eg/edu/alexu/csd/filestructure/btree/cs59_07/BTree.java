@@ -11,6 +11,9 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	private boolean flg = true;
 	public BTree(int minimumDegree) {
 		// TODO Auto-generated constructor stub
+		if(minimumDegree < 2) {
+			throw new RuntimeErrorException(null);
+		}
 		this.minimumDegree = minimumDegree;
 	}
 	@Override
@@ -138,7 +141,12 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 		if(key == null) {
 			throw new RuntimeErrorException(null);
 		}
-		return searchHelper(key, root);
+		if(root == null) {
+			return null;
+		}
+		V v = searchHelper(key, root);
+
+		return v;
 	}
 	/*
 	 * used to recurse search for a key and return the value if found and nll otherwise
@@ -407,13 +415,14 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	    // There are n keys and n+1 children, travers through n keys 
 	    // and first n children 
 	    int i; 
-	   
+	   // System.out.println(root.getKeys().size()  + "keys ***" + root.getChildren().size() + "childs  " + root.isLeaf());
 	    for (i = 0; i < root.getKeys().size(); i++) 
 	    { 
 	        // If this is not leaf, then before printing key[i], 
 	        // traverse the subtree rooted with child C[i]. 
 	        if (!root.isLeaf()) 
-	            traverse(root.getChildren().get(i));
+	            traverse(root.getChildren().get(i)); 
+	        System.out.print("** " + root.getKeys().get(i) + " "); 
 	    }
 	    
 	  

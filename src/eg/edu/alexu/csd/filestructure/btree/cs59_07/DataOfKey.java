@@ -24,4 +24,18 @@ public class DataOfKey implements Serializable{
 	public ArrayList<ISearchResult> getDataOfKey(){
 		return dataOfKey;
 	}
+	
+	public void deleteID(String id) {
+		// TODO Auto-generated method stub
+		
+		ArrayList<ISearchResult> dataOfKeyToDeleted = new ArrayList<ISearchResult>();
+		for(ISearchResult res : dataOfKey) {
+			if(res.getId().equals(id)) {
+				dataOfKeyToDeleted.add(res);
+			}
+		}
+		for(ISearchResult del : dataOfKeyToDeleted) {
+			dataOfKey.remove(del);
+		}
+	}
 }
