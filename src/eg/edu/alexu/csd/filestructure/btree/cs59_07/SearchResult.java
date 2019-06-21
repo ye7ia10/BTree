@@ -7,6 +7,7 @@ import eg.edu.alexu.csd.filestructure.btree.ISearchResult;
 public class SearchResult implements ISearchResult, Serializable{
 	String ID;
 	int rank;
+	private static final long serialVersionUID = 1L;
 	public SearchResult(String ID, int rank) {
 		// TODO Auto-generated constructor stub
 		this.ID = ID;

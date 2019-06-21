@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import eg.edu.alexu.csd.filestructure.btree.ISearchResult;
 
 public class DataOfKey implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private ArrayList<ISearchResult> dataOfKey = new ArrayList<ISearchResult>();
 	
 	public void addID(String id) {
