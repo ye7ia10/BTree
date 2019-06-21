@@ -1,12 +1,10 @@
 package eg.edu.alexu.csd.filestructure.btree.cs59_07;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import eg.edu.alexu.csd.filestructure.btree.ISearchResult;
 
-public class DataOfKey implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class DataOfKey {
 	private ArrayList<ISearchResult> dataOfKey = new ArrayList<ISearchResult>();
 	
 	public void addID(String id) {

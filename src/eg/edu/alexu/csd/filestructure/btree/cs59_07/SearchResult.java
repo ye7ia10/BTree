@@ -1,13 +1,11 @@
 package eg.edu.alexu.csd.filestructure.btree.cs59_07;
 
-import java.io.Serializable;
-
 import eg.edu.alexu.csd.filestructure.btree.ISearchResult;
 
-public class SearchResult implements ISearchResult, Serializable{
+public class SearchResult implements ISearchResult{
 	String ID;
 	int rank;
-	private static final long serialVersionUID = 1L;
+	
 	public SearchResult(String ID, int rank) {
 		// TODO Auto-generated constructor stub
 		this.ID = ID;
