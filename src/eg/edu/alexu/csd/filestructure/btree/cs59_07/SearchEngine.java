@@ -2,8 +2,6 @@ package eg.edu.alexu.csd.filestructure.btree.cs59_07;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +38,6 @@ public class SearchEngine implements ISearchEngine{
 		try {
 			builder = factory.newDocumentBuilder();
 			Document document = builder.parse(new File( filePath ));
-			Element root = document.getDocumentElement();
 			NodeList nList = document.getElementsByTagName("doc");
 			 
 			for (int temp = 0; temp < nList.getLength(); temp++)
@@ -55,9 +52,9 @@ public class SearchEngine implements ISearchEngine{
 				    String text = eElement.getTextContent();
 				    text = text.toLowerCase();
 				    addText(id, text);
-				    String title = eElement.getAttribute("title");
-				    title = title.toLowerCase();
-				    addText(id, title);
+				    //String title = eElement.getAttribute("title");
+				    //title = title.toLowerCase();
+				    //addText(id, title);
 				 }
 			}
 			
@@ -103,7 +100,6 @@ public class SearchEngine implements ISearchEngine{
 		// TODO Auto-generated method stub
 		File [] files = null;
 		getFilesNames(directoryPath, files);
-		System.out.println(FilesNames);
 		for(String s : FilesNames) {
 			indexWebPage(s);
 		}
@@ -112,7 +108,6 @@ public class SearchEngine implements ISearchEngine{
 	private void getFilesNames(String direc, File[] files){
 		File folder = new File(direc);
 		files = folder.listFiles();
-		System.out.println(files.length);
 		for (int i = 0; i < files.length; i++) {
 			  if (files[i].isFile()) {
 				  FilesNames.add(direc + "//" + files[i].getName());
@@ -155,10 +150,10 @@ public class SearchEngine implements ISearchEngine{
 				    text = text.trim();
 				    text = text.toLowerCase();
 				    deleteText(id, text);
-				    String title = eElement.getAttribute("title");
-				    title = title.trim();
-				    title = title.toLowerCase();
-				    deleteText(id, title);
+				   // String title = eElement.getAttribute("title");
+				   // title = title.trim();
+				   // title = title.toLowerCase();
+				   // deleteText(id, title);
 				 }
 			}
 			
