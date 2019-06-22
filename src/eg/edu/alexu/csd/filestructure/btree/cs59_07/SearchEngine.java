@@ -32,6 +32,9 @@ public class SearchEngine implements ISearchEngine{
 		if(filePath== null || filePath == "") {
 			throw new RuntimeErrorException(null);
 		}
+		if (!new File(filePath).exists()) {
+			throw new RuntimeErrorException(null);
+		}
 		filePath = filePath.trim();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
