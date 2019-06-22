@@ -32,9 +32,9 @@ public class Test {
 		//s.indexWebPage("res/wiki_00");
 		s.indexDirectory("res");
 		//s.indexWebPage("res/wiki_00");
-		s.deleteWebPage("res/wiki_00");
+		//s.deleteWebPage("res/wiki_00");
 		List<ISearchResult> res = new ArrayList<>();
-		res = s.searchByMultipleWordWithRanking("      tHe            ");
+		res = s.searchByMultipleWordWithRanking("      tHe     yehia       ");
 		System.out.println("*****");
 		for(ISearchResult i : res) {
 			System.out.println(i.getId() + "   " + i.getRank());

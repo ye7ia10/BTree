@@ -234,21 +234,17 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	
 	private void fill(IBTreeNode<K, V> root2, int idx) {
 		// TODO Auto-generated method stub
-		// If the previous child(C[idx-1]) has more than t-1 keys, borrow a key 
-	    // from that child 
+		
 	    if (idx != 0 && root2.getChildren().get(idx -1)
 	    	.getNumOfKeys() >= getMinimumDegree()) 
 	        borrowFromPrev(root2, idx); 
 	  
-	    // If the next child(C[idx+1]) has more than t-1 keys, borrow a key 
-	    // from that child 
+	  
 	    else if (idx!= root2.getNumOfKeys() && root2.getChildren().get(idx+1)
 		    	.getNumOfKeys() >= getMinimumDegree()) 
 	        borrowFromNext(root2, idx); 
 	  
-	    // Merge C[idx] with its sibling 
-	    // If C[idx] is the last child, merge it with with its previous sibling 
-	    // Otherwise merge it with its next sibling 
+	 
 	    else
 	    { 
 	        if (idx != root2.getNumOfKeys()) 
@@ -263,12 +259,12 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 		// TODO Auto-generated method stub
 		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
 	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx+1); 
-		    // Setting child's first key equal to keys[idx-1] from the current node 
+		     
 		child.getKeys().add(root2.getKeys().get(idx));   
 		child.getValues().add(root2.getValues().get(idx)); 
 		root2.getKeys().remove(idx);
 		root2.getValues().remove(idx);
-		    // Moving sibling's last child as C[idx]'s first child 
+		    
 		if(!child.isLeaf()) {
 		   child.getChildren().add(sibling.getChildren().get(0));
 		   sibling.getChildren().remove(0);
@@ -292,12 +288,12 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 		// TODO Auto-generated method stub
 		IBTreeNode<K,V> child = root2.getChildren().get(idx); 
 	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx-1); 
-		    // Setting child's first key equal to keys[idx-1] from the current node 
+		    
 		child.getKeys().add(0, root2.getKeys().get(idx - 1));   
 		child.getValues().add(0, root2.getValues().get(idx - 1)); 
 		root2.getKeys().remove(idx-1);
 		root2.getValues().remove(idx-1);
-		    // Moving sibling's last child as C[idx]'s first child 
+		    
 		if(!child.isLeaf()) {
 		   child.getChildren().add(0, sibling.getChildren().get(sibling.getKeys().size()));
 	       sibling.getChildren().remove(sibling.getKeys().size());
@@ -354,7 +350,7 @@ public class BTree <K extends Comparable<K>, V> implements IBTree<K, V>{
 	    IBTreeNode<K,V> sibling = root2.getChildren().get(idx+1); 
 	  
 	    // Pulling a key from the current node and inserting it into (t-1)th 
-	    // position of C[idx]
+	    
 	    child.getKeys().add(root2.getKeys().get(idx));
 	    child.getValues().add(root2.getValues().get(idx));
 	    child.getKeys().addAll(sibling.getKeys());
