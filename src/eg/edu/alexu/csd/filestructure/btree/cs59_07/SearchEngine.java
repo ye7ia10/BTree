@@ -3,6 +3,8 @@ package eg.edu.alexu.csd.filestructure.btree.cs59_07;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.management.RuntimeErrorException;
@@ -207,6 +209,12 @@ public class SearchEngine implements ISearchEngine{
 		if(data == null) {
 			data = new DataOfKey();
 		}
+		Collections.sort(data.getDataOfKey(), new Comparator<ISearchResult>() {
+			@Override
+			public int compare(ISearchResult o1, ISearchResult o2) {
+				return o1.getRank() - o2.getRank();
+			}
+		});
 		return data.getDataOfKey();
 	}
 
@@ -239,6 +247,12 @@ public class SearchEngine implements ISearchEngine{
 			}
 			ans = tempAns;
 		}
+		Collections.sort(ans, new Comparator<ISearchResult>() {
+			@Override
+			public int compare(ISearchResult o1, ISearchResult o2) {
+				return o1.getRank() - o2.getRank();
+			}
+		});
 		return ans;
 	}
 
